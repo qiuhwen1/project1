@@ -1,0 +1,123 @@
+<meta charset="UTF-8">
+<a href="gsAdd.html" id="add_btn">增加</a>
+<table id="goodsTable" align="center">
+   <thead>
+   		<tr>
+   			<th>商品ID</th>
+   			<th>商品编号</th>
+   			<th>商品名称</th>
+   			<th>商品价格</th>
+   			<th>商品描述</th>
+   			<th>操作</th>
+   		</tr>
+   </thead>
+   <tbody>
+   		
+   </tbody>
+</table>
+<script type="text/javascript">
+loadData();
+function  loadData(){
+	
+	$.ajax({
+		
+		cache:false,
+		url:"./gds.do",
+		dataType:"json",
+		method:"post",
+		aysnc:true,
+		error:function(){
+			alert("error");
+		},
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				str=str+"<tr>";
+				str=str+"<td>"+data[i].gid+"</td>";
+				str=str+"<td>"+data[i].gnid+"</td>";
+				str=str+"<td>"+data[i].gname+"</td>";
+				str=str+"<td>"+data[i].price+"</td>";
+				str=str+"<td>"+data[i].info+"</td>";
+				str=str+"<td><a href= '#' class='del_btn' >删除</a> ";
+		 		str=str+"<a href= '#' class='update_btn' >修改</a></td>";
+				str=str+"</tr>";				
+			}
+			
+			$("#goodsTable tbody").html(str);
+			gsDel();
+			gsUpdate();
+		}				
+	})
+	return false;	
+};
+$("#add_btn").click(function(){
+	$.ajax({
+		cache:false,
+		url:"goods/gsAdd.html",
+		method:"post",
+		aysnc:true,
+		error:function(){
+			alert("error");
+		},
+		success:function(data){
+			$("#right").html(data);
+		}
+	});	
+	return false;
+});
+function gsDel(){
+	
+	$(".del_btn").click(function(){
+		if(confirm("确认删除吗？")){
+		var gid=$(this).parents("tr").children("td").first().text();
+		$.ajax({
+			cache:false,
+			url:"./gdsDel.do",
+			data:{"gid":gid},
+			method:"post",
+			aysnc:true,
+			error:function(){
+				alert("error");
+			},
+			success:function(data){
+				alert(data);
+				$("#right").html(data);
+			}
+			
+			})		
+		}
+		return false;
+	});		
+};
+function gsUpdate(){
+	
+	$(".update_btn").click(function(){
+		var gid=$(this).parents("tr").children("td").first().text();
+		$.ajax({
+			cache:false,
+			url:"./gdsUpById.do",
+			data:{"gid":gid},
+			dataType:"json",
+			method:"post",
+			aysnc:true,
+			error:function(){
+				alert("error");
+			},
+			success:function(data){
+				alert(data);
+				$("#right").load("goods/gsUpdate.html",function(){
+					//设置修改页面的默认值
+   		 			$(":hidden[name=gid]").val(data.gid);
+   		 			$(":text[name=gnid]").val(data.gnid);
+   		 			$(":text[name=gname]").val(data.gname);
+   		 			$(":text[name=price]").val(data.price);
+   		 			$(":text[name=info]").val(data.info);
+					
+				});
+			}
+		})
+		return false;
+	});
+	
+};
+</script>

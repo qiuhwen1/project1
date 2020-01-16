@@ -1,0 +1,119 @@
+<meta charset="UTF-8">
+<a href="caAdd.html" id="add_btn">增加</a>
+<table id="caTable" align="center">
+   <thead>
+   		<tr>
+   			<th>类型ID</th>
+   			<th>类型编号</th>
+   			<th>类型名称</th>
+   			<th>操作</th>
+   		</tr>
+   </thead>
+   <tbody>
+   		
+   </tbody>
+</table>
+
+<script type="text/javascript">
+loadData();
+function  loadData(){
+	$.ajax({
+		cache:false,
+		url:"./ca.do",
+		dataType:"json",
+		method:"post",
+		aysnc:true,
+		error:function(){
+			
+		},
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				str=str+"<tr>";
+				str=str+"<td>"+data[i].cid+"</td>";
+				str=str+"<td>"+data[i].cnid+"</td>";
+				str=str+"<td>"+data[i].cname+"</td>";
+				str=str+"<td><a href= '#' class='del_btn' >删除</a> ";
+		 		str=str+"<a href= '#' class='update_btn' >修改</a></td>";
+				str=str+"</tr>";
+			}			
+			$("#caTable tbody").html(str);
+			caDel();
+			caUpdate();
+		}
+	});
+};
+$("#add_btn").click(function(){
+	
+	$.ajax({
+		cache:false,
+		url:"category/caAdd.html",
+		method:"post",
+		aysnc:true,
+		error:function(){
+			
+		},
+		success:function(data){
+			alert(data);
+			$("#right").html(data);
+		}
+	});
+	return false;
+});
+
+function caDel(){
+	
+	$(".del_btn").click(function(){
+		if(confirm("确认删除吗？")){
+		var cid=$(this).parents("tr").children("td").first().text();
+		$.ajax({
+			
+			cache:false,
+			url:"./caDel.do",
+			data:{"cid":cid},
+			method:"post",					
+			aysnc:true,
+			error:function(){
+				alert("error");
+			},
+			success:function(data){
+				alert(data);
+				$("#right").html(data);
+			}
+		})
+		return false;
+		}
+	});
+};
+
+function caUpdate(){
+	
+	$(".update_btn").click(function(){
+		var cid=$(this).parents("tr").children("td").first().text();
+		$.ajax({
+			cache:false,
+			url:"./caUpbyId.do",
+			data:{"cid":cid},
+			dataType:"json",
+			method:"post",
+			ayanc:true,
+			error:function(){
+				alert("error");
+			},
+			success:function(data){
+				
+				$("#right").load("category/caUpdate.html",function(){
+   		 			//设置修改页面的默认值
+   		 			$(":hidden[name=cid]").val(data.cid);
+   		 			$(":text[name=cnid]").val(data.cnid);
+   		 			$(":text[name=cname]").val(data.cname);
+   		 			
+   		 		});
+			}
+		})	
+		return false;
+	});
+		
+}
+
+</script>

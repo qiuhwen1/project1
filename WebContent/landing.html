@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form id="login_form">
+	<div style="text-align: center">
+	账号:<input type="text" name="uname"/><br/>
+	密码:<input type="password" name="upsw"/><br/>
+	<input type="submit" value="登录" id="login_btn"/>
+	</div>
+</form>
+<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+	$("#login_btn").click(function(){
+		$.ajax({
+			cache:false,
+			url:"us.do",
+			data:$("#login_form").serialize(),
+			method:"post",
+			aysnc:true,
+			error:function(){
+				
+			},
+			success:function(data){
+				if(data=="true"){
+					location.href="menu.html";
+				}else{
+					alert("登陆失败");	
+				}				
+			}
+			
+		})
+		return false;
+	})
+
+</script>
+</body>
+</html>

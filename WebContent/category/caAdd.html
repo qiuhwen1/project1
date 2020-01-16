@@ -1,0 +1,29 @@
+
+<meta charset="UTF-8">
+   <form  id="add_form">
+   		类型编号:<input type="text" name="cnid"/><br/>
+                     类型名称:<input type="text" name="cname"/><br/>
+        <input type="submit" value="保存" id="add_save_btn"/>
+   </form>
+<script type="text/javascript">
+    /*给增加按钮加一个单击事件*/
+    $("#add_save_btn").click(function(){
+   	
+    	 $.ajax({
+ 		 	cache:false,
+ 		 	url:"./caAdd.do",
+ 		 	data:$("#add_form").serialize(),
+ 		 	method:"post",
+ 		 	aysnc:true,
+ 		 	error:function(){	 		
+ 		 		alert("error");
+ 		 	},
+ 		 	success:function(data){	
+ 		 		alert(data);
+ 		 		$("#right").html(data);		 		
+ 		 	}
+ 	 });
+    	  return false;   	
+    });
+     
+</script>

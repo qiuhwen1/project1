@@ -1,0 +1,32 @@
+
+<meta charset="UTF-8">
+   <form  id="up_form">
+   		<input type="hidden" name="gid"/>
+   		商品编号:<input type="text" name="gnid"/><br/>
+                     商品名称:<input type="text" name="gname"/><br/>
+                     商品价格:<input type="text" name="price"/><br/>
+                     商品说明:<input type="text" name="info"/><br/>
+        <input type="submit" value="保存" id="up_save_btn"/>
+   </form>
+<script type="text/javascript">
+    /*给修改按钮加一个单击事件*/
+    $("#up_save_btn").click(function(){
+   	
+    	 $.ajax({
+ 		 	cache:false,
+ 		 	url:"./gdsUpSave.do",
+ 		 	data:$("#up_form").serialize(),
+ 		 	method:"post",
+ 		 	aysnc:true,
+ 		 	error:function(){	 		
+ 		 		alert("error");
+ 		 	},
+ 		 	success:function(data){	
+ 		 		alert(data);
+ 		 		$("#right").html(data);		 		
+ 		 	}
+ 	 });
+    	  return false;   	
+    });
+     
+</script>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<select id="province">
+	<option>请选择省份</option>	
+	</select>
+	<select id="city">
+	<option>请选择城市</option>	
+	</select>
+	<select id="area">
+	<option>请选择地区</option>	
+	</select>
+<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+$.ajax({
+	cache:false,//是否使用浏览器中的页面缓存
+	url:"ps.do",//请求路径
+	method:"get",//请求方式
+	aysnc:true,//异步或同步
+	dataType:"json",//响应的类型
+	error:function(){
+		
+	},
+	success:function(data){
+		//data代表服务器端响应的数据
+		var str="<option>请选择省份</option>";
+		for(var i=0;i<data.length;i++){
+			str=str+"<option value='"+data[i].pid+"'>"+data[i].pname+"</option>";		
+		}
+		$("#province").html(str);
+	}			
+});
+$("#province").change(function(){
+	$.ajax({
+		cache:false,//是否使用浏览器中的页面缓存
+		url:"city.do",//请求路径
+		data:{"pid":$("#province").val()},
+		method:"get",//请求方式
+		aysnc:true,//异步或同步
+		dataType:"json",//响应的类型
+		error:function(){
+			
+		},
+		success:function(data){
+			//data代表服务器端响应的数据
+			var str="<option>请选择城市</option>";
+			for(var i=0;i<data.length;i++){
+				str=str+"<option value='"+data[i].pid+"'>"+data[i].cname+"</option>";		
+			}
+			$("#city").html(str);
+		}										
+	})				
+		
+});
+$("#city").change(function(){
+	$.ajax({
+		cache:false,//是否使用浏览器中的页面缓存
+		url:"area.do",//请求路径
+		data:{"cid":$("#city").val()},
+		method:"get",//请求方式
+		aysnc:true,//异步或同步
+		dataType:"json",//响应的类型
+		error:function(){
+			
+		},
+		success:function(data){
+			//data代表服务器端响应的数据
+			var str="<option>请选择地区</option>";
+			for(var i=0;i<data.length;i++){
+				str=str+"<option value='"+data[i].cid+"'>"+data[i].aname+"</option>";		
+			}
+			$("#area").html(str);
+		}										
+	})				
+		
+})
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

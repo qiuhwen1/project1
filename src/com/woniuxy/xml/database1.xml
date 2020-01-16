@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connection>
+	<propertity driverClass="com.mysql.jdbc.Driver"></propertity>
+    <propertity jdbcurl="mysql:jdbc://......"></propertity>
+    <propertity userName="root"></propertity>
+    <propertity password="123456"></propertity>
+</connection>
